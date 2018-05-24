@@ -299,50 +299,47 @@ static UIImageView *imageView;
     (deviceOrientation == UIDeviceOrientationLandscapeLeft || deviceOrientation == UIDeviceOrientationLandscapeRight);
     
     if (device.iPhone4) { // does not support landscape
-        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"480h"];
+        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"-480h"];
     } else if (device.iPhone5) { // does not support landscape
-        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"568h"];
+        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"-568h"];
     } else if (device.iPhone6) { // does not support landscape
-        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"667h"];
+        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"-667h"];
     } else if (device.iPhoneX) { // does not support landscape
-        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"812h"];
+        imageName = isLandscape ? nil : [imageName stringByAppendingString:@"-812h"];
     } else if (device.iPhone6Plus) { // supports landscape
         if (isOrientationLocked) {
-            imageName = [imageName stringByAppendingString:(supportsLandscape ? @"Landscape" : @"")];
+            imageName = [imageName stringByAppendingString:(supportsLandscape ? @"-Landscape" : @"")];
         } else {
             switch (deviceOrientation) {
                 case UIInterfaceOrientationLandscapeLeft:
                 case UIInterfaceOrientationLandscapeRight:
-                    imageName = [imageName stringByAppendingString:@"Landscape"];
+                    imageName = [imageName stringByAppendingString:@"-Landscape"];
                     break;
                 default:
                     break;
             }
         }
-        imageName = [imageName stringByAppendingString:@"736h"];
+        imageName = [imageName stringByAppendingString:@"-736h"];
         
     } else if (device.iPad) { // supports landscape
         if (isOrientationLocked) {
-            imageName = [imageName stringByAppendingString:(supportsLandscape ? @"Landscape" : @"Portrait")];
+            imageName = [imageName stringByAppendingString:(supportsLandscape ? @"-Landscape" : @"-Portrait")];
         } else {
             switch (deviceOrientation) {
                 case UIInterfaceOrientationLandscapeLeft:
                 case UIInterfaceOrientationLandscapeRight:
-                    imageName = [imageName stringByAppendingString:@"Landscape"];
+                    imageName = [imageName stringByAppendingString:@"-Landscape"];
                     break;
                     
                 case UIInterfaceOrientationPortrait:
                 case UIInterfaceOrientationPortraitUpsideDown:
                 default:
-                    imageName = [imageName stringByAppendingString:@"Portrait"];
+                    imageName = [imageName stringByAppendingString:@"-Portrait"];
                     break;
             }
         }
     }
-//    if(imageName)
-//    {
-//        imageName = [imageName stringByAppendingString:@".png"];
-//    }
+
     return imageName;
 }
 
