@@ -22,27 +22,35 @@ static UIImageView *imageView;
 #pragma mark - Initialize
 - (void)pluginInitialize
 {
-    NSString* privacyTimerKey = @"privacytimer";
-    NSString* prefTimer = [self.commandDelegate.settings objectForKey:[privacyTimerKey lowercaseString]];
-    //Default value
-    self.privacyTimerInterval = PRIVACY_TIMER_DEFAULT;
-    if(prefTimer)
-        self.privacyTimerInterval = [prefTimer floatValue] > 0.0f ? [prefTimer floatValue] : PRIVACY_TIMER_DEFAULT;
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPageDidLoad)
-                                                 name:CDVPageDidLoadNotification object:nil];
-    
-    NSString* onBackgroundKey = @"privacyonbackground";
-    
-    if([self.commandDelegate.settings objectForKey:[onBackgroundKey lowercaseString]] && [[self.commandDelegate.settings objectForKey:[onBackgroundKey lowercaseString]] isEqualToString:@"true"])
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:)
-                                                     name:UIApplicationDidEnterBackgroundNotification object:nil];
+    //  Handle iPhone X
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436)
+    {
+        // Do nothing
+    }
     else
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:)
-                                                     name:UIApplicationWillResignActiveNotification object:nil];
+    {
+        NSString* privacyTimerKey = @"privacytimer";
+        NSString* prefTimer = [self.commandDelegate.settings objectForKey:[privacyTimerKey lowercaseString]];
+        //Default value
+        self.privacyTimerInterval = PRIVACY_TIMER_DEFAULT;
+        if(prefTimer)
+            self.privacyTimerInterval = [prefTimer floatValue] > 0.0f ? [prefTimer floatValue] : PRIVACY_TIMER_DEFAULT;
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidBecomeActive:)
+                                                    name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPageDidLoad)
+                                                    name:CDVPageDidLoadNotification object:nil];
+        
+        NSString* onBackgroundKey = @"privacyonbackground";
+        
+        if([self.commandDelegate.settings objectForKey:[onBackgroundKey lowercaseString]] && [[self.commandDelegate.settings objectForKey:[onBackgroundKey lowercaseString]] isEqualToString:@"true"])
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:)
+                                                        name:UIApplicationDidEnterBackgroundNotification object:nil];
+        else
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:)
+                                                        name:UIApplicationWillResignActiveNotification object:nil];
+    }
 }
 
 #pragma mark - Explicit Commands
